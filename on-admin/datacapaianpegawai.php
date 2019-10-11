@@ -126,36 +126,65 @@
   <form method="post" action="tambahdatacapaian.php" style="padding-left: 50px;padding-top: 50px;">
         <button type="submit" style="font-family: Arial black; font-size:15px;background: black;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 20px;padding-right: 20px; color:#83B582;">Tambah Data Capaian Pegawai</button>
     </form>
+    <form method="post" action="datacapaian.php" style="padding-left: 50px;padding-top: 5px;" target="_BLANK">
+        <button type="submit" style="font-family: Arial black; font-size:15px;background: yellow;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 28px;padding-right: 28px; color:black;">Cetak Data Capaian Pegawai</button>
+    </form>
     <center>
-    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 20px;">Data Capaian Pegawai</h3>
+    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 30px;">Data Capaian Pegawai</h3>
     <table border="1" class="table" width="50%" style="text-align: center;font-family: arial;" bgcolor="#83B582">
         <tr>
             <th>No</th>
+            <th>Tanggal</th>
             <th>Nama</th>
             <th>Tugas</th>
-            <th>Banyaknya</th>
-            <th>Opsi</th>       
+            <th>Banyaknya (Kg)</th>
+            <th>Gaji (Rp)</th>
+           
         </tr>
-         <?php 
-        include 'koneksi.php';
-        $no = 1;
-        $data = mysqli_query($koneksi,"select * from capaian");
-        while($d = mysqli_fetch_array($data)){
-            ?>
-        <tr>
-            <td><?php echo $no++; ?></td>
-            <td><?php echo $d['Nama']; ?></td>
-            <td><?php echo $d['Tugas']; ?></td>
-            <td><?php echo $d['Banyaknya']; ?></td>
-            <td>
-                <a style="color: black; font-family: arial black;background-color: grey;" class="edit" href="ubahdatacapaianpegawai.php?id=<?php echo $d['id']; ?>">Edit</a>                  
-            </td>
+<?php 
+    include "koneksi.php";
+    $sql = mysqli_query ($koneksi, "SELECT * FROM capaian") or die (mysqli_error($co));
+    if (mysqli_num_rows($sql) > 0) {
+    $no = 0;
+    $total = 0;
+    $Banyaknya = mysqli_query ($koneksi, "SELECT Banyaknya FROM capaian");
+        $jumlah_gaji = 0;
+        while ($data = mysqli_fetch_array($sql)){
+        if ($data['Tugas'] != 'Perenteng' && $data['Tugas'] != 'Tukang Asap' ){
+            $jumlah_gaji = $data['Banyaknya'] * 50000;
+        }
+        elseif ($data['Tugas'] != 'Kuli' && $data['Tugas'] != 'Tukang Asap' ){
+        $jumlah_gaji = $data['Banyaknya'] * 45000;
+    }
+    elseif ($data['Tugas'] != 'Kuli' && $data['Tugas'] != 'Perenteng' ){
+        $jumlah_gaji = $data['Banyaknya'] * 45000;
+    }
+
+    ?>
+    <tr>
+            <td><?=$no+1;?>.</td>
+
+            <td><?=$data['Tanggal'];?></td>
+            <td align="center"><?=$data['Nama'];?></td>
+            <td align="center"><?=$data['Tugas'];?></td>
+            <td align="center"><?=$data['Banyaknya'];?></td>
+            <td align="center"><?=$jumlah_gaji?></td>
+           
         </tr>
-        <?php } ?>
-    </table>
-    </table>
+        <?php 
+        $no++;
+        $total += $jumlah_gaji;
+     }
+ }
+     ?>
+      <tr>
+        <td colspan="5">Jumlah</td>
+        <td ><?=$total;?></td>
+        
+    </tr>
+   </table>
+ 
    </form>
     </center>
 </body>
 </html>
-

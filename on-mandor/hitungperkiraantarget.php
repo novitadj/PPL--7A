@@ -1,7 +1,7 @@
 <?php
 error_reporting(0); //abaikan error pada browser
 //panggil file koneksi.php yang sudah anda buat
-include "koneksii.php";
+include "koneksi.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -164,8 +164,8 @@ h3.title-login {
 <body >
 	<?php
 //buat variabel dari setiap field name form produk
-$tanggal= mysqli_real_escape_string($koneksii, $_POST['tanggal']);    //varibel field nama
-$pegawai= mysqli_real_escape_string($koneksii, $_POST['pegawai']);    //varibel field stok
+$tanggal= mysqli_real_escape_string($koneksi, $_POST['tanggal']);    //varibel field nama
+$pegawai= mysqli_real_escape_string($koneksi, $_POST['pegawai']);    //varibel field stok
 
 if(isset($_POST['hitung'])){
     if(empty($tanggal) && empty($pegawai)){    //jika nama kosong maka muncul pesan
@@ -179,16 +179,9 @@ if(isset($_POST['hitung'])){
     }
     
     else{  //jika semua sudah terpenuhi maka simpan ke tb_produk
-    	$tanggal = $_POST['tanggal'];
-				$jumlahpegawai = $_POST['pegawai'];
-				$totalpegawai = 50;
-				$hari = 1;
-				$targetmax = 3.75;
-				
-				$target = $jumlahpegawai * $hari / $totalpegawai * $hari * $targetmax;
 
-    $save=mysqli_query($koneksii, "INSERT INTO prediksi (id,tanggal,pegawai,target)
-    values ('','$tanggal','$pegawai','$target')");
+    $save=mysqli_query($koneksi, "INSERT INTO prediksi (id,tanggal,pegawai)
+    values ('','$tanggal','$pegawai')");
     if($save){ //jika simpan berhasil maka muncul pesan dan menuju ke halaman produk
         echo "<script>alert('Data Perkiraan Berhasil disimpan !');document.location='dataperkiraan.php'</script>";
     }

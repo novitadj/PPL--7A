@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="style.css" rel="stylesheet">
-    <title>DATA PERKIRAAN</title>
+    <title>DATA CAPAIAN PEGAWAI</title>
 
     <style>
 
@@ -13,11 +13,11 @@
     * {margin:0; padding:0;}
 
     body {
-        background-color: #E5E5E5;
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        background-size: 100%;
+    	background-color: #E5E5E5;
+    	position: fixed;
+    	width: 100%;
+    	height: 100%;
+    	background-size: 100%;
 
      font-family:Arial, Helvetica, sans-serif;
      color:#000;
@@ -107,18 +107,13 @@
 <nav>
     <ul>
         <li><a href="index.php">Beranda</a></li>
-        <li><a href="#">Perediksi</a>
-            <ul>
-                <li><a href="hitungperkiraantarget.php">Hitung Perkiraan Target</a></li>
-                <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
-            </ul>
-        </li>
+        <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
         <li><a href="#">Laporan</a>
             <ul>
                 <li><a href="#">Laporan Analisis Kualitas</a></li>
             </ul>
         </li>
-        <li><a href="#">Kepegawaian</a>
+        <li><a href="#">Pegawai</a>
             <ul>
                 <li><a href="datapegawai.php">Data Pegawai</a></li>
                 <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
@@ -128,32 +123,64 @@
     </ul>
 </nav>
 <body > 
- <center >
-    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 20px;">Data Perkiraan</h3>
+    <form method="post" action="datacapaian.php" style="padding-left: 50px;padding-top: 50px;" target="_BLANK">
+        <button type="submit" style="font-family: Arial black; font-size:15px;background: yellow;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 28px;padding-right: 28px; color:black;">Cetak Data Capaian Pegawai</button>
+    </form>
+    <center>
+    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 30px;">Data Capaian Pegawai</h3>
     <table border="1" class="table" width="50%" style="text-align: center;font-family: arial;" bgcolor="#83B582">
         <tr>
             <th>No</th>
             <th>Tanggal</th>
-            <th>Jumlah Pegawai</th>
-            <th>Target (Kg)</th>
-                 
+            <th>Nama</th>
+            <th>Tugas</th>
+            <th>Banyaknya (Kg)</th>
+            <th>Gaji (Rp)</th>
+           
         </tr>
-         <?php 
-        include 'koneksii.php';
-        $no = 1;
-        $data = mysqli_query($koneksii,"select id, tanggal, pegawai, ((pegawai*1)/(50*1))* 3075 as hitung from prediksi");
-        while($d = mysqli_fetch_array($data)){
-            ?>
-        <tr>
-            <td><?php echo $no++; ?></td>
-            <td><?php echo $d['tanggal']; ?></td>
-            <td><?php echo $d['pegawai']; ?></td>
-            <td><?php echo ceil($d['hitung']); ?></td>
-          
+<?php 
+    include "koneksi.php";
+    $sql = mysqli_query ($koneksi, "SELECT * FROM capaian") or die (mysqli_error($co));
+    if (mysqli_num_rows($sql) > 0) {
+    $no = 0;
+    $total = 0;
+    $Banyaknya = mysqli_query ($koneksi, "SELECT Banyaknya FROM capaian");
+        $jumlah_gaji = 0;
+        while ($data = mysqli_fetch_array($sql)){
+        if ($data['Tugas'] != 'Perenteng' && $data['Tugas'] != 'Tukang Asap' ){
+            $jumlah_gaji = $data['Banyaknya'] * 50000;
+        }
+        elseif ($data['Tugas'] != 'Kuli' && $data['Tugas'] != 'Tukang Asap' ){
+        $jumlah_gaji = $data['Banyaknya'] * 45000;
+    }
+    elseif ($data['Tugas'] != 'Kuli' && $data['Tugas'] != 'Perenteng' ){
+        $jumlah_gaji = $data['Banyaknya'] * 45000;
+    }
+
+    ?>
+    <tr>
+            <td><?=$no+1;?>.</td>
+
+            <td><?=$data['Tanggal'];?></td>
+            <td align="center"><?=$data['Nama'];?></td>
+            <td align="center"><?=$data['Tugas'];?></td>
+            <td align="center"><?=$data['Banyaknya'];?></td>
+            <td align="center"><?=$jumlah_gaji?></td>
+           
         </tr>
-        <?php } ?>
-    </table>
-    </table>
+        <?php 
+        $no++;
+        $total += $jumlah_gaji;
+     }
+ }
+     ?>
+      <tr>
+        <td colspan="5">Jumlah</td>
+        <td ><?=$total;?></td>
+        
+    </tr>
+   </table>
+ 
    </form>
     </center>
 </body>

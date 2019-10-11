@@ -1,3 +1,8 @@
+<?php
+error_reporting(0); //abaikan error pada browser
+//panggil file koneksi.php yang sudah anda buat
+include "koneksi.php";
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -149,6 +154,40 @@ h3.title-login {
     </ul>
 </nav>
 <body > 
+    <?php
+//buat variabel dari setiap field name form produk
+$Tanggal= mysqli_real_escape_string($koneksi, $_POST['Tanggal']);    //varibel field nama
+$Nama= mysqli_real_escape_string($koneksi, $_POST['Nama']);    //varibel field nama
+$Tugas= mysqli_real_escape_string($koneksi, $_POST['Tugas']);  //varibel field deskripsi
+$Banyaknya= mysqli_real_escape_string($koneksi, $_POST['Banyaknya']);    //varibel field nama
+
+if(isset($_POST['simpan'])){
+    if(empty($Tanggal) && empty($Nama) && empty($Alamat) && empty($Tugas) && empty($Banyaknya)){    //jika nama kosong maka muncul pesan
+        $error="<p style='color:red;'>* Data Tidak Boleh Kosong !</p>";
+    }
+    elseif(empty($Tanggal)){ //jika kategori kosong maka muncul pesan
+        $error="<p style='color:red;'>* Masukkan Tanggal !</p>";
+    }
+    elseif(empty($Nama)){ //jika kategori kosong maka muncul pesan
+        $error="<p style='color:red;'>* Masukkan Nama Pegawai !</p>";
+    }
+    elseif(empty($Tugas)){  //jika deskripsi kosong maka muncul pesan
+        $error="<p style='color:red;'>* Masukkan Tugas Pegawai !</p>";
+    }
+    elseif(empty($Banyaknya)){ //jika kategori kosong maka muncul pesan
+        $error="<p style='color:red;'>* Masukkan Banyaknya Capaian !</p>";
+    }
+    
+    else{  //jika semua sudah terpenuhi maka simpan ke tb_produk
+
+    $save=mysqli_query($koneksi, "INSERT INTO capaian (id,Tanggal,Nama,Tugas,Banyaknya)
+    values ('','$Tanggal','$Nama','$Tugas','$Banyaknya')");
+    if($save){ //jika simpan berhasil maka muncul pesan dan menuju ke halaman produk
+        echo "<script>alert('Data Capaian Berhasil disimpan !');document.location='datacapaianpegawai.php'</script>";
+    }
+}
+}
+    ?>
   <form method="post" action="datacapaianpegawai.php" style="padding-left: 50px;padding-top: 50px;" >
         <button type="submit" style="font-family: Arial black; font-size:15px;background: black;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 20px;padding-right: 20px; color:#83B582;">Tabel Data Capaian Pegawai</button>
     </form>
@@ -156,8 +195,12 @@ h3.title-login {
  <div style="padding-left: 400px;padding-right: 500px; width: 110%;" class="form-login">
  <div class="outter-form-login">
         
-            <form action="simpandatacapaian.php" class="inner-login" method="post" onsubmit="validasi()">
+            <form action="" class="inner-login" method="post" enctype="multipart/form-data">
+                <tr><td colspan="3"><?php echo $error;?></td></tr>
             <h3 style="padding-top: 20px; color: black; font-family: Arial black; font-size:20px; padding-bottom: 20px;" class="text-center title-login">Masukkan Data Capaian Pegawai</h3>
+                 <div class="form-group">
+                    <input type="date" class="form-control" name="Tanggal" id="Tanggal" placeholder="Tanggal">
+                </div>
                 <div class="form-group">
                     <input type="text" class="form-control" name="Nama" id="Nama" placeholder="Nama">
                 </div>
@@ -172,7 +215,7 @@ h3.title-login {
                 </div>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" name="Banyaknya" id="Banyaknya" placeholder="Banyaknya">
+                    <input type="number" class="form-control" name="Banyaknya" id="Banyaknya" placeholder="Banyaknya (Kg)">
                 </div>
         
         <input onsubmit="validasi()" type="submit" name="simpan" value="Simpan" style="font-family: Arial black; font-size:15px;background: black;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 20px;padding-right: 20px; color:#83B582;">

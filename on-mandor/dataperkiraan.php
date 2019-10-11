@@ -135,20 +135,20 @@
             <th>No</th>
             <th>Tanggal</th>
             <th>Jumlah Pegawai</th>
-            <th>Target</th>
+            <th>Target (Kg)</th>
                  
         </tr>
          <?php 
-        include 'koneksii.php';
+        include 'koneksi.php';
         $no = 1;
-        $data = mysqli_query($koneksii,"select id, tanggal, pegawai, ((pegawai*1)/(50*1))* 3.75 as hitung from prediksi");
+        $data = mysqli_query($koneksi,"select id, tanggal, pegawai, ((pegawai*1)/(50*1))* 3075 as hitung from prediksi");
         while($d = mysqli_fetch_array($data)){
             ?>
         <tr>
             <td><?php echo $no++; ?></td>
             <td><?php echo $d['tanggal']; ?></td>
             <td><?php echo $d['pegawai']; ?></td>
-            <td><?php echo $d['hitung']; ?></td>
+            <td><?php echo ceil($d['hitung']); ?></td>
           
         </tr>
         <?php } ?>

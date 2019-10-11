@@ -1,3 +1,8 @@
+<?php
+error_reporting(0); //abaikan error pada browser
+//panggil file koneksi.php yang sudah anda buat
+include "koneksi.php";
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -149,21 +154,47 @@ h3.title-login {
         </li>
         <li><a href="#">Kepegawaian</a>
             <ul>
-                <li><a href="#">Data Pegawai</a></li>
-                <li><a href="#">Data Capaian Pegawai</a></li>
+                <li><a href="datapegawai.php">Data Pegawai</a></li>
+                <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
             </ul>
         </li>
         <li><a href="./../logout.php" onClick="return confirm ('Apakah Ingin Keluar ?')">Keluar</a></li>
     </ul>
 </nav>
 <body >
+	<?php
+//buat variabel dari setiap field name form produk
+$tanggal= mysqli_real_escape_string($koneksi, $_POST['tanggal']);    //varibel field nama
+$pegawai= mysqli_real_escape_string($koneksi, $_POST['pegawai']);    //varibel field stok
 
+if(isset($_POST['hitung'])){
+    if(empty($tanggal) && empty($pegawai)){    //jika nama kosong maka muncul pesan
+        $error="<p style='color:red;'>* Data Tidak Boleh Kosong !</p>";
+    }
+    elseif(empty($tanggal)){ //jika kategori kosong maka muncul pesan
+        $error="<p style='color:red;'>* Masukkan Tanggal Perkiraan !</p>";
+    }
+    elseif(empty($pegawai)){  //jika deskripsi kosong maka muncul pesan
+        $error="<p style='color:red;'>* Masukan Jumlah Pegawai !</p>";
+    }
+    
+    else{  //jika semua sudah terpenuhi maka simpan ke tb_produk
+
+    $save=mysqli_query($koneksi, "INSERT INTO prediksi (id,tanggal,pegawai)
+    values ('','$tanggal','$pegawai')");
+    if($save){ //jika simpan berhasil maka muncul pesan dan menuju ke halaman produk
+        echo "<script>alert('Data Perkiraan Berhasil disimpan !');document.location='dataperkiraan.php'</script>";
+    }
+}
+}
+    ?>
 <h1 style="padding-top: 50px; text-align: center;font-family:Arial; font-size: 20px; color: #83B582; background-color:black; padding-bottom: 50px;">Masukkan Tanggal Perkiraan Serta Jumlah Pegawai Yang Masuk Dalam Form Yang Telah Disediakan ! <br>Hitung Perkiraan Target Yang Akan Dicapai !</h1>
  <div style="padding-left: 400px;padding-right: 500px; width: 110%;" class="form-login">
  <div class="outter-form-login">
  	
         
-            <form onsubmit="validasi()" action="tambahhasil.php" class="inner-login" method="post" >
+            <form  action="" class="inner-login" method="post" enctype="multipart/form-data" >
+            	 <tr><td colspan="3"><?php echo $error;?></td></tr>
             <h3 style="padding-top: 20px; color: black; font-family: Arial black; font-size:20px; padding-bottom: 20px;" class="text-center title-login">Hitung Perkiraan Target</h3>
                 <div class="form-group">
                     <input type="date" class="form-control" name="tanggal" placeholder="Tanggal" id="tanggal">
@@ -176,17 +207,7 @@ h3.title-login {
                <div style="padding-top: 30px; font-size: 20px; text-align: justify; color:black; " >
                	 <input style="font-family: Arial black; font-size:15px;" type="submit" name="hitung" class="btn btn-block btn-custom-green" value="Hitung" />
 
-               <?php
-				if(isset($_POST['hitung'])){
-				$tanggal = $_POST['tanggal'];
-				$jumlahpegawai = $_POST['pegawai'];
-				$totalpegawai = 50;
-				$hari = 1;
-				$targetmax = 3.75;
-				
-				$target = $jumlahpegawai * $hari / $totalpegawai * $hari * $targetmax; 
-		}
-	?>
+              
        </div>
             </form>
         </div>
