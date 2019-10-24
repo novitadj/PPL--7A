@@ -14,7 +14,7 @@
 
     body {
     	background-color: #E5E5E5;
-    	position: fixed;
+    	
     	width: 100%;
     	height: 100%;
     	background-size: 100%;
@@ -39,7 +39,7 @@
     }
 
     nav ul {
-     background: #83B582;
+     background: #e9e5dd;
      padding: 0 20px;
      list-style: none;
      position: relative;
@@ -74,7 +74,7 @@
     }
 
     nav ul ul{
-     background: #83B582;
+     background: #e9e5dd;
      border-radius: 0px;
      padding: 0;
      position: absolute;
@@ -107,29 +107,31 @@
 <nav>
     <ul>
         <li><a href="index.php">Beranda</a></li>
-        <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
-        <li><a href="#">Laporan</a>
-            <ul>
-                <li><a href="#">Laporan Analisis Kualitas</a></li>
-            </ul>
-        </li>
         <li><a href="#">Pegawai</a>
             <ul>
                 <li><a href="datapegawai.php">Data Pegawai</a></li>
                 <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
             </ul>
         </li>
+        <li><a href="#">Perediksi</a>
+            <ul>
+                <li><a href="hitungperkiraantarget.php">Hitung Perkiraan Target</a></li>
+                <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Kualitas</a></li>
+        
         <li><a href="./../logout.php" onClick="return confirm ('Apakah Ingin Keluar ?')">Keluar</a></li>
     </ul>
 </nav>
-<body > 
-    <form method="post" action="datacapaian.php" style="padding-left: 50px;padding-top: 50px;" target="_BLANK">
-        <button type="submit" style="font-family: Arial black; font-size:15px;background: yellow;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 28px;padding-right: 28px; color:black;">Cetak Data Capaian Pegawai</button>
+<body style="background-color: #e9e5dd;"> 
+    <form method="post" action="datacapaian.php" style="padding-left: 50px;padding-top: 5px;" target="_BLANK">
+        <button type="submit" style="font-family: Arial black; font-size:15px;background: #a0855b;padding-top: 10px;padding-bottom: 10px;padding-left: 28px;padding-right: 28px; color:#e9e5dd;">Cetak Data Capaian Pegawai</button>
     </form>
     <center>
-    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 30px;">Data Capaian Pegawai</h3>
-    <table border="1" class="table" width="50%" style="text-align: center;font-family: arial;" bgcolor="#83B582">
-        <tr>
+    <h3 style="font-family: arial black; font-size: 25px;padding-top: 10px; padding-bottom: 10px;color: #e9e5dd;background-color: #a0855b;margin-top: 1%; margin-bottom: 2%;margin-right: 30%; margin-left: 30%;">Data Capaian Pegawai</h3>
+    <table border="1" class="table"  style="position: center; width: 75%;text-align: center;font-family: arial;" bgcolor="#e9e5dd">
+        <tr bgcolor="#a0855b" style="color: #e9e5dd;">
             <th>No</th>
             <th>Tanggal</th>
             <th>Nama</th>
@@ -144,22 +146,25 @@
     if (mysqli_num_rows($sql) > 0) {
     $no = 0;
     $total = 0;
+    $jumlah_gaji =0;
+    $jumlah = 0;
     $Banyaknya = mysqli_query ($koneksi, "SELECT Banyaknya FROM capaian");
-        $jumlah_gaji = 0;
+       
         while ($data = mysqli_fetch_array($sql)){
         if ($data['Tugas'] != 'Perenteng' && $data['Tugas'] != 'Tukang Asap' ){
-            $jumlah_gaji = $data['Banyaknya'] * 50000;
+            $jumlah_gaji = 80000;
         }
         elseif ($data['Tugas'] != 'Kuli' && $data['Tugas'] != 'Tukang Asap' ){
-        $jumlah_gaji = $data['Banyaknya'] * 45000;
+        $jumlah_gaji = $data['Banyaknya'] * 1000;
     }
     elseif ($data['Tugas'] != 'Kuli' && $data['Tugas'] != 'Perenteng' ){
-        $jumlah_gaji = $data['Banyaknya'] * 45000;
+        $jumlah_gaji = 80000;
     }
-
+    $total += $jumlah_gaji;
+    $jumlah += $data['Banyaknya'];
     ?>
     <tr>
-            <td><?=$no+1;?>.</td>
+            <td ><?=$no+1;?>.</td>
 
             <td><?=$data['Tanggal'];?></td>
             <td align="center"><?=$data['Nama'];?></td>
@@ -167,18 +172,30 @@
             <td align="center"><?=$data['Banyaknya'];?></td>
             <td align="center"><?=$jumlah_gaji?></td>
            
+           
         </tr>
         <?php 
         $no++;
-        $total += $jumlah_gaji;
-     }
- }
-     ?>
-      <tr>
-        <td colspan="5">Jumlah</td>
+        
+    }
+    ?>
+        <tr >
+      
+        <td bgcolor="#a0855b" colspan="4" style="color: #e9e5dd; font-family: arial black;">Total</td>
+        <td ><?=$jumlah;?></td>
+        <td></td>
+        
+    </tr>
+         <tr>
+      
+        <td bgcolor="#a0855b" colspan="5" style="color: #e9e5dd;font-family: arial black;">Jumlah Gaji</td>
         <td ><?=$total;?></td>
         
     </tr>
+    <?php
+         
+ }
+     ?>
    </table>
  
    </form>

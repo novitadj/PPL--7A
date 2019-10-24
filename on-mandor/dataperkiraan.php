@@ -1,3 +1,8 @@
+<?php
+error_reporting(0); //abaikan error pada browser
+//panggil file koneksi.php yang sudah anda buat
+include "koneksi.php";
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +19,7 @@
 
     body {
         background-color: #E5E5E5;
-        position: fixed;
+       
         width: 100%;
         height: 100%;
         background-size: 100%;
@@ -39,7 +44,7 @@
     }
 
     nav ul {
-     background: #83B582;
+     background: #e9e5dd;
      padding: 0 20px;
      list-style: none;
      position: relative;
@@ -74,7 +79,7 @@
     }
 
     nav ul ul{
-     background: #83B582;
+     background: #e9e5dd;
      border-radius: 0px;
      padding: 0;
      position: absolute;
@@ -107,54 +112,111 @@
 <nav>
     <ul>
         <li><a href="index.php">Beranda</a></li>
+        <li><a href="#">Pegawai</a>
+            <ul>
+                <li><a href="datapegawai.php">Data Pegawai</a></li>
+                <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
+            </ul>
+        </li>
         <li><a href="#">Perediksi</a>
             <ul>
                 <li><a href="hitungperkiraantarget.php">Hitung Perkiraan Target</a></li>
                 <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
             </ul>
         </li>
-        <li><a href="#">Laporan</a>
-            <ul>
-                <li><a href="#">Laporan Analisis Kualitas</a></li>
-            </ul>
-        </li>
-        <li><a href="#">Kepegawaian</a>
-            <ul>
-                <li><a href="datapegawai.php">Data Pegawai</a></li>
-                <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
-            </ul>
-        </li>
+        <li><a href="#">Kualitas</a></li>
+        
         <li><a href="./../logout.php" onClick="return confirm ('Apakah Ingin Keluar ?')">Keluar</a></li>
     </ul>
 </nav>
-<body > 
+<body style="background-color: #e9e5dd;"> 
  <center >
-    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 20px;">Data Perkiraan</h3>
-    <table border="1" class="table" width="50%" style="text-align: center;font-family: arial;" bgcolor="#83B582">
+    
+    <h3 style="font-family: arial black; font-size: 25px;padding-top: 10px; padding-bottom: 10px; margin-bottom: 2%; margin-top: 3%; background-color:#a0855b ;color: #e9e5dd;margin-right: 30%; margin-left: 30%;">Data Perkiraan</h3>
+    <table border="1" class="data" style="position: center; width: 60%;text-align: center;font-family: arial;" bgcolor="#e9e5dd">
+    <tr bgcolor="#a0855b" style="color: #e9e5dd;">
+        <th>No.</th>
+        <th>Tanggal</th>
+        <th>Jumlah Capaian (Kg)</th>
+        
+    </tr>
+    <?php 
+    include 'koneksi.php';
+    $sql = mysqli_query ($koneksi, "SELECT tanggal, sum(Banyaknya) as jumlah from capaian group by tanggal");
+    if (mysqli_num_rows($sql) > 0) {
+
+        $xa = 0;
+        $jumlah_xa = 0;
+        $jumlah_ya = 0;
+        $jumlah_xxa = 0;
+        $jumlah_xya = 0;
+
+
+        while ($data = mysqli_fetch_array($sql)){
+            $jumlah_xa += $xa;
+            $jumlah_ya += $data['jumlah'];
+            $jumlah_xxa += ($xa * $xa);
+            $jumlah_xya += ($xa * $data['jumlah']);
+        
+    
+     ?>
         <tr>
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Jumlah Pegawai</th>
-            <th>Target (Kg)</th>
-                 
+            <td><?=$xa+1;?>.</td>
+
+            <td><?=$data['tanggal'];?></td>
+            <td align="center"><?=$data['jumlah'];?></td>
+            
         </tr>
-         <?php 
-        include 'koneksi.php';
-        $no = 1;
-        $data = mysqli_query($koneksi,"select id, tanggal, pegawai, ((pegawai*1)/(50*1))* 3075 as hitung from prediksi");
-        while($d = mysqli_fetch_array($data)){
+        <?php 
+        $xa++;
+     }
+     ?>
+     
+     
+    <?php 
+        $rata2_xa = $jumlah_xa / $xa;
+        $rata2_ya = $jumlah_ya / $xa;
+        $b1a = ($jumlah_xya - (($jumlah_xa * $jumlah_ya) /  $xa)) / ($jumlah_xxa - ($jumlah_xa * $jumlah_xa) / $xa);
+        $b0a = $rata2_ya - $b1a * $rata2_xa;
+             ?>
+        
+     <?php 
+     }
+      ?>
+    
+</table>
+
+<div>
+    <?php 
+    $n= mysqli_real_escape_string($koneksi, $_POST['n']);
+        if (isset($_POST['hitung'])) {
+    if(empty($n)){    //jika nama kosong maka muncul pesan
+        $error="<p style='padding-top: 10px;padding-bottom: 10px; font-family: arial; font-size: 18px; color:red;background-color:#a0855b; margin-bottom: 2%; margin-top: 2%; margin-right: 25%; margin-left: 25%;'>* Data Hari Tidak Boleh Kosong !</p>";
+    }
+    else { //jika kategori kosong maka muncul pesan
+       
+            $hari = $_POST['n'];
+            $blna = ($xa - 1) +  $hari;
+    
+            $prediksia = $b0a + ($b1a * $blna);
+            
             ?>
-        <tr>
-            <td><?php echo $no++; ?></td>
-            <td><?php echo $d['tanggal']; ?></td>
-            <td><?php echo $d['pegawai']; ?></td>
-            <td><?php echo ceil($d['hitung']); ?></td>
-          
-        </tr>
-        <?php } ?>
-    </table>
+            <div style="padding-top: 10px;padding-bottom: 10px; font-family: arial; font-size: 18px; color:black ;background-color:#a0855b; margin-bottom: 2%; margin-top: 2%; margin-right: 25%; margin-left: 25%;">
+                Prediksi jumlah capaian pegawai untuk <?=$hari;?> hari berikutnya adalah <?=ceil($prediksia);?> Kg <br>
+               
+            </div>
+            <?php 
+        }
+    }
+     ?>
+</div>
+<div>
     </table>
    </form>
+   <tr><td colspan="3"><?php echo $error;?></td></tr>
+   <form method="post" action="hitungperkiraantarget.php" style="padding-top: 10px;">
+        <button type="submit" name="prediksi" id="prediksi" style="font-family: Arial black; font-size:15px;background-color:  #a0855b;color: #fff;padding-top: 10px;padding-bottom: 10px;padding-left: 20px;padding-right: 20px; color:#e9e5dd;">Prediksi Capaian Pegawai</button>
+    </form >
     </center>
 </body>
 </html>

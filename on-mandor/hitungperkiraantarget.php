@@ -1,8 +1,3 @@
-<?php
-error_reporting(0); //abaikan error pada browser
-//panggil file koneksi.php yang sudah anda buat
-include "koneksi.php";
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,11 +11,11 @@ include "koneksi.php";
     <style>
 
 .form-login{
-    margin-top: 5%;
+    margin-top: 2%;
 }
 .outter-form-login {
     padding: 10px;
-    background: #83B582;
+    background: #a0855b;
     position: relative;
     border-radius: 5px;
 }
@@ -38,8 +33,9 @@ h3.title-login {
     color: #ADADAD;
 }
 .btn-custom-green {
-    background: black;
-    color: #fff;
+    background: #e9e5dd;
+    color: black;
+    font-family: arial black;
 }
         <style>
 
@@ -48,7 +44,7 @@ h3.title-login {
 
     body {
     	background-color: #E5E5E5;
-    	position: fixed;
+    	
     	width: 100%;
     	height: 100%;
     	background-size: 100%;
@@ -73,7 +69,7 @@ h3.title-login {
     }
 
     nav ul {
-     background: #83B582;
+     background: #e9e5dd;
      padding: 0 20px;
      list-style: none;
      position: relative;
@@ -108,7 +104,7 @@ h3.title-login {
     }
 
     nav ul ul{
-     background: #83B582;
+     background: #e9e5dd;
      border-radius: 0px;
      padding: 0;
      position: absolute;
@@ -141,67 +137,35 @@ h3.title-login {
 <nav>
     <ul>
         <li><a href="index.php">Beranda</a></li>
+        <li><a href="#">Pegawai</a>
+            <ul>
+                <li><a href="datapegawai.php">Data Pegawai</a></li>
+                <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
+            </ul>
+        </li>
         <li><a href="#">Perediksi</a>
             <ul>
                 <li><a href="hitungperkiraantarget.php">Hitung Perkiraan Target</a></li>
                 <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
             </ul>
         </li>
-        <li><a href="#">Laporan</a>
-            <ul>
-                <li><a href="#">Laporan Analisis Kualitas</a></li>
-            </ul>
-        </li>
-        <li><a href="#">Kepegawaian</a>
-            <ul>
-                <li><a href="datapegawai.php">Data Pegawai</a></li>
-                <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
-            </ul>
-        </li>
+        <li><a href="#">Kualitas</a></li>
+        
         <li><a href="./../logout.php" onClick="return confirm ('Apakah Ingin Keluar ?')">Keluar</a></li>
     </ul>
 </nav>
-<body >
-	<?php
-//buat variabel dari setiap field name form produk
-$tanggal= mysqli_real_escape_string($koneksi, $_POST['tanggal']);    //varibel field nama
-$pegawai= mysqli_real_escape_string($koneksi, $_POST['pegawai']);    //varibel field stok
-
-if(isset($_POST['hitung'])){
-    if(empty($tanggal) && empty($pegawai)){    //jika nama kosong maka muncul pesan
-        $error="<p style='color:red;'>* Data Tidak Boleh Kosong !</p>";
-    }
-    elseif(empty($tanggal)){ //jika kategori kosong maka muncul pesan
-        $error="<p style='color:red;'>* Masukkan Tanggal Perkiraan !</p>";
-    }
-    elseif(empty($pegawai)){  //jika deskripsi kosong maka muncul pesan
-        $error="<p style='color:red;'>* Masukan Jumlah Pegawai !</p>";
-    }
-    
-    else{  //jika semua sudah terpenuhi maka simpan ke tb_produk
-
-    $save=mysqli_query($koneksi, "INSERT INTO prediksi (id,tanggal,pegawai)
-    values ('','$tanggal','$pegawai')");
-    if($save){ //jika simpan berhasil maka muncul pesan dan menuju ke halaman produk
-        echo "<script>alert('Data Perkiraan Berhasil disimpan !');document.location='dataperkiraan.php'</script>";
-    }
-}
-}
-    ?>
-<h1 style="padding-top: 50px; text-align: center;font-family:Arial; font-size: 20px; color: #83B582; background-color:black; padding-bottom: 50px;">Masukkan Tanggal Perkiraan Serta Jumlah Pegawai Yang Masuk Dalam Form Yang Telah Disediakan ! <br>Hitung Perkiraan Target Yang Akan Dicapai !</h1>
- <div style="padding-left: 400px;padding-right: 500px; width: 110%;" class="form-login">
+<body style="background-color:#e9e5dd; ">
+<h1 style="padding-top: 10px;margin-top: 4%; margin-bottom: 2.5%; text-align: center;font-family:roboto; font-size: 30px; color: black;background-color: #e9e5dd; padding-bottom: 10px;margin-right: 15%; margin-left: 15%;">Masukkan Hari Keberapa Yang Ingin Anda  Perkirakan Dalam Form ! <br>Hitung Perkiraan Target Yang Akan Dicapai !</h1>
+<center>
+ <div style="position: center; width: 50%;" class="form-login">
  <div class="outter-form-login">
  	
         
-            <form  action="" class="inner-login" method="post" enctype="multipart/form-data" >
-            	 <tr><td colspan="3"><?php echo $error;?></td></tr>
-            <h3 style="padding-top: 20px; color: black; font-family: Arial black; font-size:20px; padding-bottom: 20px;" class="text-center title-login">Hitung Perkiraan Target</h3>
-                <div class="form-group">
-                    <input type="date" class="form-control" name="tanggal" placeholder="Tanggal" id="tanggal">
-                </div>
+            <form  action="dataperkiraan.php" class="inner-login" method="post" enctype="multipart/form-data" >
+            <h3 style="padding-top: 20px; color: black; font-family: Arial black; font-size:20px; padding-bottom: 20px;" class="text-center title-login">Hitung Perkiraan Capaian</h3>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" name="pegawai" placeholder="Jumlah Pegawai" id="pegawai">
+                    <input type="number" class="form-control" name="n" placeholder="Hari" id="n">
                 </div>
                
                <div style="padding-top: 30px; font-size: 20px; text-align: justify; color:black; " >
@@ -212,7 +176,7 @@ if(isset($_POST['hitung'])){
             </form>
         </div>
     </div>
-
+</center>
 </body>
 
 </html>

@@ -14,7 +14,7 @@
 
     body {
     	background-color: #E5E5E5;
-    	position: fixed;
+    	
     	width: 100%;
     	height: 100%;
     	background-size: 100%;
@@ -39,7 +39,7 @@
     }
 
     nav ul {
-     background: #83B582;
+     background: #e9e5dd;
      padding: 0 20px;
      list-style: none;
      position: relative;
@@ -74,7 +74,7 @@
     }
 
     nav ul ul{
-     background: #83B582;
+     background: #e9e5dd;
      border-radius: 0px;
      padding: 0;
      position: absolute;
@@ -107,26 +107,28 @@
 <nav>
     <ul>
         <li><a href="index.php">Beranda</a></li>
-        <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
-        <li><a href="#">Laporan</a>
-            <ul>
-                <li><a href="#">Laporan Analisis Kualitas</a></li>
-            </ul>
-        </li>
         <li><a href="#">Pegawai</a>
             <ul>
                 <li><a href="datapegawai.php">Data Pegawai</a></li>
                 <li><a href="datacapaianpegawai.php">Data Capaian Pegawai</a></li>
             </ul>
         </li>
+        <li><a href="#">Perediksi</a>
+            <ul>
+                <li><a href="hitungperkiraantarget.php">Hitung Perkiraan Target</a></li>
+                <li><a href="dataperkiraan.php">Data Perkiraan</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Kualitas</a></li>
+        
         <li><a href="./../logout.php" onClick="return confirm ('Apakah Ingin Keluar ?')">Keluar</a></li>
     </ul>
 </nav>
-<body > 
+<body style="background-color:#e9e5dd; "> 
     <center>
-    <h3 style="font-family: arial; font-size: 25px;padding-top: 10px; padding-bottom: 20px;">Data Pegawai</h3>
-    <table border="1" class="table" width="50%" style="text-align: center;font-family: arial;" bgcolor="#83B582">
-        <tr>
+    <h3 style="font-family: arial black; font-size: 25px;padding-top: 5px; padding-bottom: 10px; color:#e9e5dd; background-color: #a0855b; margin-top: 2%; margin-bottom: 2%;margin-right: 30%; margin-left: 30%;">Data Pegawai</h3>
+    <table border="1" class="table" style="position: center; width: 75%;text-align: center;font-family: arial;" bgcolor="#e9e5dd">
+        <tr bgcolor="#a0855b" style="color: #e9e5dd;">
             <th>No</th>
             <th>Nama</th>
             <th>Alamat</th>
