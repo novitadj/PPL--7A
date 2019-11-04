@@ -9,8 +9,13 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
    
   </head>
-  <body background="back.jpg" style="background-repeat: no-repeat;width: 100%;height: 100%;background-size: 100%;">
-    <div style="padding-left: 400px;padding-right: 500px; padding-top: 200px; width: 110%;" class="form-login">
+  <body background="20191101_195450_0000.png" style="background-repeat: no-repeat;position: center; background-size: 100%;">
+    <center>
+        <h2 style="padding-top: 50px;">Gudang Pengopenan Tembakau<br/>PTPN X Kertosari</h2>
+        <br>
+    </center>
+    <center>
+    <div style="position: center; width: 50%; padding-top: 5%;" class="form-login">
     <div style="padding-bottom: 30px;">
     <?php
     /* handle error */
@@ -19,13 +24,11 @@
           <strong>Warning!</strong> <?=base64_decode($_GET['error']);?>
         </div>
     <?php endif;?>
-</div>
+  </div>
         <div class="outter-form-login">
-        <div class="logo-login">
-            <img  src="icons8-people-50.png">
-        </div>
+        
             <form action="check-login.php" class="inner-login" method="post">
-            <h3 style="padding-top: 50px; color: white;" class="text-center title-login">Login User</h3>
+            <h3 style="padding-top: 10px; color: white; font-family: arial black;" class="text-center title-login">Login</h3>
                 <div class="form-group">
                     <input type="text" class="form-control" name="username" placeholder="Username">
                 </div>
@@ -34,12 +37,14 @@
                     <input type="password" class="form-control" name="password" placeholder="Password">
                 </div>
                 
-                <input type="submit" class="btn btn-block btn-custom-green" value="MASUK" />
+                <input type="submit" class="btn btn-block btn-custom-green" value="MASUK" >
                 
                 
             </form>
         </div>
     </div>
+  
+</center>
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -52,9 +57,9 @@
 }
 .outter-form-login {
     padding: 10px;
-    background: black;
-    position: relative;
-    border-radius: 5px;
+    background:#a0855b;
+    border-radius: 10px;
+    padding-bottom: 30px;
 
 }
 .logo-login {
@@ -80,7 +85,8 @@ h3.title-login {
     color: #ADADAD;
 }
 .btn-custom-green {
-    background: #21A957;
-    color: #fff;
+    background: #eadea6;
+    color: black;
+    font-family: arial black;
 }
 </style>
